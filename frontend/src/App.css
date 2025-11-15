@@ -12,3 +12,15 @@ html, body, #root {
   width: 100%;
   height: 100%;
 }
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #586F6B;
+}
+
+.app-content {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #586F6B;
+}
