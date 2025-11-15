@@ -8,7 +8,11 @@ import {
     setDoc, 
     findUserDocByUid, 
     generateReadableDocId,
-    signOut
+    signOut,
+    getEmergencyContacts,
+    addEmergencyContact,
+    updateEmergencyContact,
+    deleteEmergencyContact
 } from '../utils/firebase';
 import './UserProfile.css';
 
@@ -38,6 +42,18 @@ function UserProfile() {
     const [medicationsList, setMedicationsList] = useState([]);
     const [allergyInput, setAllergyInput] = useState('');
     const [medicationInput, setMedicationInput] = useState('');
+    
+    // Emergency contacts state
+    const [emergencyContacts, setEmergencyContacts] = useState([]);
+    const [userDocId, setUserDocId] = useState(null);
+    const [showEmergencyForm, setShowEmergencyForm] = useState(false);
+    const [editingContact, setEditingContact] = useState(null);
+    const [emergencyFormData, setEmergencyFormData] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        relationship: ''
+    });
 
     // Check authentication state and load existing profile
     useEffect(() => {
@@ -66,6 +82,7 @@ function UserProfile() {
                 setIsEditing(true);
                 setProfileExists(true);
                 setViewMode(true); // Show view mode if profile exists
+                setUserDocId(userDoc.id); // Store the document ID for subcollection access
 
                 // Populate form fields
                 setFormData({
@@ -86,11 +103,24 @@ function UserProfile() {
                 if (profileData.medications && profileData.medications.length > 0) {
                     setMedicationsList(profileData.medications);
                 }
+                
+                // Load emergency contacts
+                await loadEmergencyContacts(userDoc.id);
             } else {
                 setViewMode(false); // Show edit mode if no profile exists
             }
         } catch (error) {
             console.error('Error loading existing profile:', error);
+        }
+    };
+    
+    // Load emergency contacts from subcollection
+    const loadEmergencyContacts = async (docId) => {
+        try {
+            const contacts = await getEmergencyContacts(docId);
+            setEmergencyContacts(contacts);
+        } catch (error) {
+            console.error('Error loading emergency contacts:', error);
         }
     };
 
@@ -235,10 +265,16 @@ function UserProfile() {
             // Save to Firestore
             const userDocRef = doc(db, 'users', docIdToUse);
             await setDoc(userDocRef, profileData);
+            
+            // Store the document ID for subcollection access
+            setUserDocId(docIdToUse);
 
             setProfileExists(true);
             setViewMode(true); // Switch to view mode after saving
             setIsEditing(true);
+            
+            // Reload emergency contacts if they exist
+            await loadEmergencyContacts(docIdToUse);
             
             alert(isEditing ? 'Profile updated successfully!' : 'Profile completed successfully!');
         } catch (error) {
@@ -281,6 +317,107 @@ function UserProfile() {
             console.error('Error signing out:', error);
             alert('Error signing out: ' + error.message);
         }
+    };
+    
+    // Emergency contact handlers
+    const handleEmergencyFormChange = (e) => {
+        const { name, value } = e.target;
+        setEmergencyFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+    
+    const handleAddEmergencyContact = () => {
+        setEditingContact(null);
+        setEmergencyFormData({
+            name: '',
+            phone: '',
+            email: '',
+            relationship: ''
+        });
+        setShowEmergencyForm(true);
+    };
+    
+    const handleEditEmergencyContact = (contact) => {
+        setEditingContact(contact);
+        setEmergencyFormData({
+            name: contact.name || '',
+            phone: contact.phone || '',
+            email: contact.email || '',
+            relationship: contact.relationship || ''
+        });
+        setShowEmergencyForm(true);
+    };
+    
+    const handleSaveEmergencyContact = async (e) => {
+        e.preventDefault();
+        
+        if (!userDocId) {
+            alert('Please save your profile first before adding emergency contacts.');
+            return;
+        }
+        
+        if (!emergencyFormData.name.trim()) {
+            alert('Please enter a name for the emergency contact.');
+            return;
+        }
+        
+        try {
+            if (editingContact) {
+                // Update existing contact
+                await updateEmergencyContact(userDocId, editingContact.id, emergencyFormData);
+                alert('Emergency contact updated successfully!');
+            } else {
+                // Add new contact
+                await addEmergencyContact(userDocId, emergencyFormData);
+                alert('Emergency contact added successfully!');
+            }
+            
+            // Reload contacts
+            await loadEmergencyContacts(userDocId);
+            setShowEmergencyForm(false);
+            setEditingContact(null);
+            setEmergencyFormData({
+                name: '',
+                phone: '',
+                email: '',
+                relationship: ''
+            });
+        } catch (error) {
+            console.error('Error saving emergency contact:', error);
+            alert('Error saving emergency contact: ' + error.message);
+        }
+    };
+    
+    const handleDeleteEmergencyContact = async (contactId) => {
+        if (!window.confirm('Are you sure you want to delete this emergency contact?')) {
+            return;
+        }
+        
+        if (!userDocId) {
+            return;
+        }
+        
+        try {
+            await deleteEmergencyContact(userDocId, contactId);
+            await loadEmergencyContacts(userDocId);
+            alert('Emergency contact deleted successfully!');
+        } catch (error) {
+            console.error('Error deleting emergency contact:', error);
+            alert('Error deleting emergency contact: ' + error.message);
+        }
+    };
+    
+    const handleCancelEmergencyForm = () => {
+        setShowEmergencyForm(false);
+        setEditingContact(null);
+        setEmergencyFormData({
+            name: '',
+            phone: '',
+            email: '',
+            relationship: ''
+        });
     };
 
     // Render profile display view
@@ -463,7 +600,157 @@ function UserProfile() {
                         </div>
                     </div>
                 </div>
+
+                {/* Emergency Contacts Card */}
+                <div className="profile-card">
+                    <div className="profile-card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        <h3>Emergency Contacts</h3>
+                        <button 
+                            type="button" 
+                            className="add-contact-button"
+                            onClick={handleAddEmergencyContact}
+                            style={{ marginLeft: 'auto', padding: '4px 12px', fontSize: '14px' }}
+                        >
+                            + Add Contact
+                        </button>
+                    </div>
+                    <div className="profile-card-content">
+                        {emergencyContacts.length > 0 ? (
+                            <div className="emergency-contacts-list">
+                                {emergencyContacts.map((contact) => (
+                                    <div key={contact.id} className="emergency-contact-item">
+                                        <div className="contact-info">
+                                            <div className="contact-name">{contact.name}</div>
+                                            <div className="contact-details">
+                                                {contact.relationship && (
+                                                    <span className="contact-relationship">{contact.relationship}</span>
+                                                )}
+                                                {contact.phone && (
+                                                    <span className="contact-phone">{contact.phone}</span>
+                                                )}
+                                                {contact.email && (
+                                                    <span className="contact-email">{contact.email}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="contact-actions">
+                                            <button 
+                                                type="button"
+                                                className="edit-contact-button"
+                                                onClick={() => handleEditEmergencyContact(contact)}
+                                                title="Edit contact"
+                                            >
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                                </svg>
+                                            </button>
+                                            <button 
+                                                type="button"
+                                                className="delete-contact-button"
+                                                onClick={() => handleDeleteEmergencyContact(contact.id)}
+                                                title="Delete contact"
+                                            >
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="info-empty" style={{ padding: '20px', textAlign: 'center' }}>
+                                No emergency contacts added yet. Click "Add Contact" to add one.
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
+            
+            {/* Emergency Contact Form Modal */}
+            {showEmergencyForm && (
+                <div className="modal-overlay" onClick={handleCancelEmergencyForm}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>{editingContact ? 'Edit Emergency Contact' : 'Add Emergency Contact'}</h3>
+                            <button 
+                                type="button" 
+                                className="modal-close"
+                                onClick={handleCancelEmergencyForm}
+                            >
+                                ×
+                            </button>
+                        </div>
+                        <form onSubmit={handleSaveEmergencyContact} className="emergency-contact-form">
+                            <div className="form-group">
+                                <label htmlFor="emergencyName">Name *</label>
+                                <input
+                                    type="text"
+                                    id="emergencyName"
+                                    name="name"
+                                    value={emergencyFormData.name}
+                                    onChange={handleEmergencyFormChange}
+                                    required
+                                    placeholder="Full name"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="emergencyRelationship">Relationship</label>
+                                <input
+                                    type="text"
+                                    id="emergencyRelationship"
+                                    name="relationship"
+                                    value={emergencyFormData.relationship}
+                                    onChange={handleEmergencyFormChange}
+                                    placeholder="e.g., Father, Mother, Spouse"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="emergencyPhone">Phone</label>
+                                <input
+                                    type="tel"
+                                    id="emergencyPhone"
+                                    name="phone"
+                                    value={emergencyFormData.phone}
+                                    onChange={handleEmergencyFormChange}
+                                    placeholder="Phone number"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="emergencyEmail">Email</label>
+                                <input
+                                    type="email"
+                                    id="emergencyEmail"
+                                    name="email"
+                                    value={emergencyFormData.email}
+                                    onChange={handleEmergencyFormChange}
+                                    placeholder="Email address"
+                                />
+                            </div>
+                            <div className="modal-actions">
+                                <button 
+                                    type="button" 
+                                    className="cancel-button"
+                                    onClick={handleCancelEmergencyForm}
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    className="save-button"
+                                >
+                                    {editingContact ? 'Update' : 'Add'} Contact
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 

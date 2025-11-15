@@ -16,7 +16,10 @@ import {
     collection,
     query,
     where,
-    getDocs
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc
 } from 'firebase/firestore';
 
 // Your Firebase configuration
@@ -67,6 +70,64 @@ export async function findUserDocByUid(uid) {
     }
 }
 
+// Helper functions for emergency contacts subcollection
+export async function getEmergencyContacts(userDocId) {
+    try {
+        const emergencyRef = collection(db, 'users', userDocId, 'emergency');
+        const querySnapshot = await getDocs(emergencyRef);
+        return querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    } catch (error) {
+        console.error('Error getting emergency contacts:', error);
+        return [];
+    }
+}
+
+export async function addEmergencyContact(userDocId, contactData) {
+    try {
+        console.log('Adding emergency contact:', { userDocId, contactData });
+        const emergencyRef = collection(db, 'users', userDocId, 'emergency');
+        console.log('Emergency ref path:', emergencyRef.path);
+        const docRef = await addDoc(emergencyRef, {
+            ...contactData,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        });
+        console.log('Emergency contact added successfully:', docRef.id);
+        return docRef.id;
+    } catch (error) {
+        console.error('Error adding emergency contact:', error);
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
+        throw error;
+    }
+}
+
+export async function updateEmergencyContact(userDocId, contactId, contactData) {
+    try {
+        const contactRef = doc(db, 'users', userDocId, 'emergency', contactId);
+        await updateDoc(contactRef, {
+            ...contactData,
+            updatedAt: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error updating emergency contact:', error);
+        throw error;
+    }
+}
+
+export async function deleteEmergencyContact(userDocId, contactId) {
+    try {
+        const contactRef = doc(db, 'users', userDocId, 'emergency', contactId);
+        await deleteDoc(contactRef);
+    } catch (error) {
+        console.error('Error deleting emergency contact:', error);
+        throw error;
+    }
+}
+
 // Export auth and db for use in other files
 export { 
     auth, 
@@ -80,6 +141,9 @@ export {
     query,
     where,
     getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signInWithPopup,
