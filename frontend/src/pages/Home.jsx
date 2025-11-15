@@ -4,7 +4,7 @@ import '../styles/Home.css';
 
 const Home = () => {
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Hi! I am BabyCheck AI. Ask me anything about your baby! I can also help you track important health events and milestones.' }
+    { sender: 'bot', text: 'Hi! I am Child Click Care AI. Ask me anything about your child! I can also help you track important health events and milestones.' }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -102,7 +102,7 @@ const Home = () => {
         method: 'DELETE'
       });
       setMessages([
-        { sender: 'bot', text: 'Hi! I am BabyCheck AI. Ask me anything about your baby! I can also help you track important health events and milestones.' }
+        { sender: 'bot', text: 'Hi! I am Child Click Care AI. Ask me anything about your child! I can also help you track important health events and milestones.' }
       ]);
     } catch (err) {
       console.error('Error clearing conversation:', err);
@@ -112,7 +112,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="header-section">
-        <h1 className="home-title">BabyCheck AI</h1>
+        <h1 className="home-title">Child Click Care AI</h1>
         <p className="home-subtitle">Your trusted companion for baby care</p>
         <div className="connection-status">
           <span className={`status-dot ${isConnected ? 'connected' : 'disconnected'}`}></span>

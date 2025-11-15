@@ -18,7 +18,7 @@ const Timeline = () => {
         </div>
         <h3 className="timeline-empty-title">No events yet</h3>
         <p className="timeline-empty-text">
-          Start chatting with BabyCheck AI about your baby's health, milestones, or symptoms.
+          Start chatting with Child Click Care AI about your child's health, milestones, or symptoms.
           Events will automatically appear here!
         </p>
       </div>

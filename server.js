@@ -23,7 +23,7 @@ const conversationHistories = new Map();
 
 // prompt to ollmama
 const SYSTEM_PROMPT = `
-You are BabyCheck AI. When a user messages you about their baby's health, milestones, or symptoms,
+You are Child Click Care AI. When a user messages you about their child's health, milestones, or symptoms,
 always generate a timeline event if applicable. The timeline event must be in the following JSON format:
 
 TIMELINE_EVENT: {
@@ -126,6 +126,6 @@ app.get('*', (req, res) => {
 
 // start server 
   app.listen(PORT, () => {
-  console.log(`🚀 BabyCheck AI Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Child Click Care AI Server running on http://localhost:${PORT}`);
   console.log(`📡 Make sure Ollama is running on http://localhost:11434`);
 });

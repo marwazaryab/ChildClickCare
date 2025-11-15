@@ -128,6 +128,84 @@ export async function deleteEmergencyContact(userDocId, contactId) {
     }
 }
 
+// Helper functions for child profiles subcollection
+export async function getChildProfiles(userDocId) {
+    try {
+        const childProfileRef = collection(db, 'users', userDocId, 'childProfile');
+        const querySnapshot = await getDocs(childProfileRef);
+        return querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    } catch (error) {
+        console.error('Error getting child profiles:', error);
+        return [];
+    }
+}
+
+export async function addChildProfile(userDocId, childData) {
+    try {
+        console.log('Adding child profile:', { userDocId, childData });
+        const childProfileRef = collection(db, 'users', userDocId, 'childProfile');
+        const docRef = await addDoc(childProfileRef, {
+            ...childData,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        });
+        
+        // Update parent's childrenIds array
+        const userDocRef = doc(db, 'users', userDocId);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+            const currentChildrenIds = userDoc.data().childrenIds || [];
+            await updateDoc(userDocRef, {
+                childrenIds: [...currentChildrenIds, docRef.id],
+                updatedAt: new Date().toISOString()
+            });
+        }
+        
+        console.log('Child profile added successfully:', docRef.id);
+        return docRef.id;
+    } catch (error) {
+        console.error('Error adding child profile:', error);
+        throw error;
+    }
+}
+
+export async function updateChildProfile(userDocId, childId, childData) {
+    try {
+        const childRef = doc(db, 'users', userDocId, 'childProfile', childId);
+        await updateDoc(childRef, {
+            ...childData,
+            updatedAt: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error updating child profile:', error);
+        throw error;
+    }
+}
+
+export async function deleteChildProfile(userDocId, childId) {
+    try {
+        const childRef = doc(db, 'users', userDocId, 'childProfile', childId);
+        await deleteDoc(childRef);
+        
+        // Remove from parent's childrenIds array
+        const userDocRef = doc(db, 'users', userDocId);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+            const currentChildrenIds = userDoc.data().childrenIds || [];
+            await updateDoc(userDocRef, {
+                childrenIds: currentChildrenIds.filter(id => id !== childId),
+                updatedAt: new Date().toISOString()
+            });
+        }
+    } catch (error) {
+        console.error('Error deleting child profile:', error);
+        throw error;
+    }
+}
+
 // Export auth and db for use in other files
 export { 
     auth, 

@@ -12,7 +12,8 @@ import {
     getEmergencyContacts,
     addEmergencyContact,
     updateEmergencyContact,
-    deleteEmergencyContact
+    deleteEmergencyContact,
+    getChildProfiles
 } from '../utils/firebase';
 import './UserProfile.css';
 
@@ -54,6 +55,9 @@ function UserProfile() {
         email: '',
         relationship: ''
     });
+    
+    // Child profiles state
+    const [childProfiles, setChildProfiles] = useState([]);
 
     // Check authentication state and load existing profile
     useEffect(() => {
@@ -106,6 +110,9 @@ function UserProfile() {
                 
                 // Load emergency contacts
                 await loadEmergencyContacts(userDoc.id);
+                
+                // Load child profiles
+                await loadChildProfiles(userDoc.id);
             } else {
                 setViewMode(false); // Show edit mode if no profile exists
             }
@@ -121,6 +128,16 @@ function UserProfile() {
             setEmergencyContacts(contacts);
         } catch (error) {
             console.error('Error loading emergency contacts:', error);
+        }
+    };
+    
+    // Load child profiles from subcollection
+    const loadChildProfiles = async (docId) => {
+        try {
+            const children = await getChildProfiles(docId);
+            setChildProfiles(children);
+        } catch (error) {
+            console.error('Error loading child profiles:', error);
         }
     };
 
@@ -275,6 +292,9 @@ function UserProfile() {
             
             // Reload emergency contacts if they exist
             await loadEmergencyContacts(docIdToUse);
+            
+            // Reload child profiles
+            await loadChildProfiles(docIdToUse);
             
             alert(isEditing ? 'Profile updated successfully!' : 'Profile completed successfully!');
         } catch (error) {
@@ -598,6 +618,69 @@ function UserProfile() {
                                 )}
                             </span>
                         </div>
+                    </div>
+                </div>
+
+                {/* Children Profiles Card */}
+                <div className="profile-card">
+                    <div className="profile-card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <h3>Children</h3>
+                        <button 
+                            type="button" 
+                            className="add-contact-button"
+                            onClick={() => navigate('/child/new')}
+                            style={{ marginLeft: 'auto', padding: '4px 12px', fontSize: '14px' }}
+                        >
+                            + Add Child
+                        </button>
+                    </div>
+                    <div className="profile-card-content">
+                        {childProfiles.length > 0 ? (
+                            <div className="emergency-contacts-list">
+                                {childProfiles.map((child) => (
+                                    <div 
+                                        key={child.id} 
+                                        className="emergency-contact-item"
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => navigate(`/child/${child.id}`)}
+                                    >
+                                        <div className="contact-info">
+                                            <div className="contact-name">
+                                                {child.firstName && child.lastName 
+                                                    ? `${child.firstName} ${child.lastName}` 
+                                                    : 'Unnamed Child'}
+                                            </div>
+                                            <div className="contact-details">
+                                                {child.age && (
+                                                    <span className="contact-relationship">{child.age} years old</span>
+                                                )}
+                                                {child.gender && (
+                                                    <span className="contact-phone">{child.gender}</span>
+                                                )}
+                                                {child['height(cm)'] && (
+                                                    <span className="contact-email">{child['height(cm)']} cm</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="contact-actions">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <polyline points="9 18 15 12 9 6"></polyline>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="info-empty" style={{ padding: '20px', textAlign: 'center' }}>
+                                No children added yet. Click "Add Child" to add a child profile.
+                            </div>
+                        )}
                     </div>
                 </div>
 

@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import TimelinePage from './pages/TimelinePage';
 import UserProfile from './pages/UserProfile';
+import ChildProfile from './pages/ChildProfile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import './App.css';
@@ -21,6 +22,8 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/timeline" element={<TimelinePage />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/child/new" element={<ChildProfile />} />
+          <Route path="/child/:childId" element={<ChildProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>

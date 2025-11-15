@@ -3,7 +3,9 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
+    // =========================
     // Users collection
+    // =========================
     match /users/{userId} {
       
       // Allow authenticated users to read any user document
@@ -23,7 +25,10 @@ service cloud.firestore {
       allow delete: if request.auth != null &&
                     resource.data.authUid == request.auth.uid;
 
+      // =========================
       // Emergency contacts subcollection
+      // /users/{userId}/emergency/{contactId}
+      // =========================
       match /emergency/{contactId} {
         // Helper function to check if user owns the parent document
         // This checks the authUid field in the user document, not the document ID
@@ -32,16 +37,32 @@ service cloud.firestore {
                  get(/databases/$(database)/documents/users/$(userId)).data.authUid == request.auth.uid;
         }
         
-        // Allow users to read their own emergency contacts
         allow read: if isOwner();
-        
-        // Allow users to create emergency contacts under their own profile
         allow create: if isOwner();
-        
-        // Allow users to update their own emergency contacts
         allow update: if isOwner();
-        
-        // Allow users to delete their own emergency contacts
+        allow delete: if isOwner();
+      }
+
+      // =========================
+      // Child profiles subcollection
+      // /users/{userId}/childProfile/{childId}
+      // =========================
+      match /childProfile/{childId} {
+        // Helper function to check if user owns the parent document
+        // This checks the authUid field in the user document, not the document ID
+        function isOwner() {
+          return request.auth != null && 
+                 get(/databases/$(database)/documents/users/$(userId)).data.authUid == request.auth.uid;
+        }
+
+        // Only the logged-in parent can see their kids' profiles
+        allow read: if isOwner();
+
+        // Create/update allowed only for the owner
+        allow create: if isOwner();
+        allow update: if isOwner();
+
+        // Delete allowed for the owner
         allow delete: if isOwner();
       }
     }

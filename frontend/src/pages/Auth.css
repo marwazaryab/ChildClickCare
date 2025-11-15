@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 .auth-container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background-color: #586F6B;
+    background-color: #CDEEF7;
     animation: fadeIn 0.5s ease-in;
 }
 
@@ -98,9 +100,9 @@
 }
 
 .auth-form .form-group input:focus {
-    border-color: #586F6B;
-    box-shadow: 0 0 0 4px rgba(88, 111, 107, 0.1),
-                0 4px 12px rgba(88, 111, 107, 0.1);
+    border-color: #65B9DB;
+    box-shadow: 0 0 0 4px rgba(101, 185, 219, 0.1),
+                0 4px 12px rgba(101, 185, 219, 0.1);
     transform: translateY(-1px);
 }
 
@@ -122,11 +124,11 @@
     cursor: pointer;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(135deg, #586F6B 0%, #7a9b96 100%);
+    background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
     color: white;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 16px rgba(88, 111, 107, 0.3),
-                0 2px 8px rgba(88, 111, 107, 0.2);
+    box-shadow: 0 4px 16px rgba(30, 212, 221, 0.3),
+                0 2px 8px rgba(30, 212, 221, 0.2);
     letter-spacing: 0.3px;
     position: relative;
     overflow: hidden;
@@ -149,8 +151,8 @@
 
 .auth-button:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(88, 111, 107, 0.4),
-                0 4px 12px rgba(88, 111, 107, 0.3);
+    box-shadow: 0 6px 20px rgba(30, 212, 221, 0.4),
+                0 4px 12px rgba(30, 212, 221, 0.3);
 }
 
 .auth-button:active:not(:disabled) {
@@ -219,14 +221,14 @@
 }
 
 .auth-link {
-    color: #586F6B;
+    color: #65B9DB;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s ease;
 }
 
 .auth-link:hover {
-    color: #7a9b96;
+    color: #0098DA;
     text-decoration: underline;
 }
 

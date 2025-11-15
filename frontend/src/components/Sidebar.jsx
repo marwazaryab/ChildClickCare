@@ -50,7 +50,7 @@ const Sidebar = () => {
               <line x1="15" y1="9" x2="15.01" y2="9"></line>
             </svg>
           </div>
-          <h1 className="sidebar-title">BabyCheck</h1>
+          <h1 className="sidebar-title">Child Click Care</h1>
           <p className="sidebar-tagline">AI Care Assistant</p>
         </div>
         

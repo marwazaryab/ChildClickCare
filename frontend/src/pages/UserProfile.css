@@ -11,7 +11,7 @@
     align-items: flex-start;
     justify-content: center;
     animation: fadeIn 0.5s ease-in;
-    background-color: #586F6B;
+    background-color: #CDEEF7;
 }
 
 @keyframes fadeIn {
@@ -101,7 +101,7 @@
     content: '';
     width: 4px;
     height: 20px;
-    background: linear-gradient(135deg, #586F6B 0%, #7a9b96 100%);
+    background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
     border-radius: 2px;
 }
 
@@ -157,9 +157,9 @@
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: #586F6B;
-    box-shadow: 0 0 0 4px rgba(88, 111, 107, 0.1),
-                0 4px 12px rgba(88, 111, 107, 0.1);
+    border-color: #65B9DB;
+    box-shadow: 0 0 0 4px rgba(101, 185, 219, 0.1),
+                0 4px 12px rgba(101, 185, 219, 0.1);
     transform: translateY(-1px);
 }
 
@@ -196,7 +196,7 @@
     width: 22px;
     height: 22px;
     cursor: pointer;
-    accent-color: #586F6B;
+    accent-color: #65B9DB;
     border-radius: 6px;
 }
 
@@ -222,13 +222,13 @@
 }
 
 .tags-input:focus-within {
-    border-color: #586F6B;
-    box-shadow: 0 0 0 4px rgba(88, 111, 107, 0.1),
-                0 4px 12px rgba(88, 111, 107, 0.1);
+    border-color: #65B9DB;
+    box-shadow: 0 0 0 4px rgba(101, 185, 219, 0.1),
+                0 4px 12px rgba(101, 185, 219, 0.1);
 }
 
 .tag {
-    background: linear-gradient(135deg, #586F6B 0%, #7a9b96 100%);
+    background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
     color: white;
     padding: 6px 12px;
     border-radius: 16px;
@@ -237,7 +237,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 2px 6px rgba(88, 111, 107, 0.2);
+    box-shadow: 0 2px 6px rgba(30, 212, 221, 0.2);
     animation: tagSlideIn 0.3s ease;
     transition: all 0.2s ease;
 }
@@ -255,7 +255,7 @@
 
 .tag:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(88, 111, 107, 0.3);
+    box-shadow: 0 4px 12px rgba(30, 212, 221, 0.3);
 }
 
 .tag .remove {
@@ -315,12 +315,12 @@ button[type="submit"] {
     cursor: pointer;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(135deg, #586F6B 0%, #7a9b96 100%);
+    background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
     color: white;
     margin-top: 8px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 16px rgba(88, 111, 107, 0.3),
-                0 2px 8px rgba(88, 111, 107, 0.2);
+    box-shadow: 0 4px 16px rgba(30, 212, 221, 0.3),
+                0 2px 8px rgba(30, 212, 221, 0.2);
     letter-spacing: 0.3px;
     position: relative;
     overflow: hidden;
@@ -341,8 +341,8 @@ button[type="submit"]:hover:not(:disabled)::before {
 
 button[type="submit"]:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(88, 111, 107, 0.4),
-                0 4px 12px rgba(88, 111, 107, 0.3);
+    box-shadow: 0 6px 20px rgba(30, 212, 221, 0.4),
+                0 4px 12px rgba(30, 212, 221, 0.3);
 }
 
 button[type="submit"]:active:not(:disabled) {
@@ -396,7 +396,7 @@ button[type="submit"]:disabled {
     width: 24px;
     height: 24px;
     border: 3px solid #e2e8f0;
-    border-top-color: #586F6B;
+    border-top-color: #65B9DB;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
@@ -442,14 +442,14 @@ button[type="submit"]:disabled {
 
 /* Profile Header Section */
 .profile-header-section {
-    background: linear-gradient(135deg, #586F6B 0%, #7a9b96 100%);
+    background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
     border-radius: 20px;
     padding: 40px;
     margin-bottom: 30px;
     display: flex;
     align-items: center;
     gap: 24px;
-    box-shadow: 0 10px 40px rgba(88, 111, 107, 0.25);
+    box-shadow: 0 10px 40px rgba(30, 212, 221, 0.25);
     position: relative;
     overflow: hidden;
 }
@@ -482,7 +482,7 @@ button[type="submit"]:disabled {
 .avatar-initials {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #586F6B;
+    color: #65B9DB;
     font-family: 'Poppins', sans-serif;
     letter-spacing: -1px;
 }
@@ -541,14 +541,14 @@ button[type="submit"]:disabled {
 }
 
 .edit-profile-button {
-    background: linear-gradient(135deg, #586F6B 0%, #7a9b96 100%);
+    background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(88, 111, 107, 0.3);
+    box-shadow: 0 4px 12px rgba(30, 212, 221, 0.3);
 }
 
 .edit-profile-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(88, 111, 107, 0.4);
+    box-shadow: 0 6px 16px rgba(30, 212, 221, 0.4);
 }
 
 .logout-button {
@@ -608,11 +608,11 @@ button[type="submit"]:disabled {
     gap: 12px;
     margin-bottom: 20px;
     padding-bottom: 16px;
-    border-bottom: 2px solid rgba(88, 111, 107, 0.1);
+    border-bottom: 2px solid rgba(101, 185, 219, 0.1);
 }
 
 .profile-card-header svg {
-    color: #586F6B;
+    color: #65B9DB;
     flex-shrink: 0;
 }
 
@@ -689,13 +689,13 @@ button[type="submit"]:disabled {
 .tag-badge {
     display: inline-block;
     padding: 6px 14px;
-    background: rgba(88, 111, 107, 0.1);
-    color: #586F6B;
+    background: rgba(101, 185, 219, 0.1);
+    color: #65B9DB;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
-    border: 1px solid rgba(88, 111, 107, 0.2);
+    border: 1px solid rgba(101, 185, 219, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -779,7 +779,7 @@ button[type="submit"]:disabled {
 
 /* Emergency Contacts Styles */
 .add-contact-button {
-    background: linear-gradient(135deg, #586F6B 0%, #7a9b96 100%);
+    background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -791,7 +791,7 @@ button[type="submit"]:disabled {
 
 .add-contact-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(88, 111, 107, 0.3);
+    box-shadow: 0 4px 12px rgba(30, 212, 221, 0.3);
 }
 
 .emergency-contacts-list {
@@ -865,8 +865,8 @@ button[type="submit"]:disabled {
 }
 
 .edit-contact-button:hover {
-    background: rgba(88, 111, 107, 0.1);
-    color: #586F6B;
+    background: rgba(101, 185, 219, 0.1);
+    color: #65B9DB;
 }
 
 .delete-contact-button:hover {
@@ -988,14 +988,14 @@ button[type="submit"]:disabled {
 }
 
 .save-button {
-    background: linear-gradient(135deg, #586F6B 0%, #7a9b96 100%);
+    background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(88, 111, 107, 0.3);
+    box-shadow: 0 4px 12px rgba(30, 212, 221, 0.3);
 }
 
 .save-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(88, 111, 107, 0.4);
+    box-shadow: 0 6px 16px rgba(30, 212, 221, 0.4);
 }
 
 @media (max-width: 768px) {

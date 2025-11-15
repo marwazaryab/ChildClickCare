@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 .timeline-page {
   width: 100%;
   min-height: 100vh;
   padding: 40px;
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 .timeline-page-header {
@@ -14,7 +17,7 @@
 .timeline-page-title {
   font-size: 2.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1ED4DD 0%, #0098DA 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -46,7 +49,7 @@
   padding: 24px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1),
               0 0 0 1px rgba(255, 255, 255, 0.1);
-  border-left: 4px solid var(--border-color, #667eea);
+  border-left: 4px solid var(--border-color, #65B9DB);
   transition: all 0.3s ease;
   animation: slideIn 0.4s ease-out;
 }
@@ -94,12 +97,12 @@
 }
 
 .timeline-card-btn-edit {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(101, 185, 219, 0.1);
+  color: #65B9DB;
 }
 
 .timeline-card-btn-edit:hover {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(101, 185, 219, 0.2);
   transform: translateY(-1px);
 }
 
@@ -153,12 +156,12 @@
 
 .timeline-card-tag {
   padding: 4px 12px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  color: #667eea;
+  background: linear-gradient(135deg, rgba(30, 212, 221, 0.1) 0%, rgba(0, 152, 218, 0.1) 100%);
+  color: #65B9DB;
   border-radius: 12px;
   font-size: 0.85rem;
   font-weight: 500;
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(101, 185, 219, 0.2);
 }
 
 .timeline-card-severity {
@@ -191,7 +194,7 @@
 .timeline-card-edit-select {
   width: 100%;
   padding: 10px 14px;
-  border: 2px solid rgba(102, 126, 234, 0.2);
+  border: 2px solid rgba(101, 185, 219, 0.2);
   border-radius: 10px;
   font-size: 0.95rem;
   font-family: inherit;
@@ -204,8 +207,8 @@
 .timeline-card-edit-textarea:focus,
 .timeline-card-edit-select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #65B9DB;
+  box-shadow: 0 0 0 3px rgba(101, 185, 219, 0.1);
 }
 
 .timeline-card-edit-textarea {
@@ -230,12 +233,12 @@
   width: 80px;
   height: 80px;
   margin: 0 auto 24px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(30, 212, 221, 0.1) 0%, rgba(0, 152, 218, 0.1) 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #667eea;
+  color: #65B9DB;
 }
 
 .timeline-empty-title {
